@@ -2,10 +2,11 @@ Package: HDeconometrics
 Type: Package
 Title: What the Package Does (Title Case)
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
+Authors@R: c(person("Gabriel F. R.", "Vasconcelos", email="gabrielrvsc@yahoo.com.br", role = c("aut", "cre")))
+Maintainer: Gabriel Vasconcelos <gabrielrvsc@yahoo.com.br>
+BugReports: https://github.com/gabrielrvsc/HDeconometrics/issues
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
+LazyData: TRUE
