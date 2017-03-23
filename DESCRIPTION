@@ -11,3 +11,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: TRUE
 RoxygenNote: 6.0.1
+Imports: 
+    Matrix,
+    glmnet,
+    boot

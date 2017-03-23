@@ -1,3 +1,65 @@
+#' Estimate a GLM with lasso, elasticnet or ridge regularization using the information criterion
+#'
+#' Uses the glmnet function from the glmnet package to estimate models through all the regularization path and selects the best model using some information criterion. The glmnet package chooses the best model only by cross validation (cv.glmnet). Choosing with information criterion is faster and more adequate for some aplications, especially time-series.
+#'
+#' @details bla bla bla.
+#'
+#' @param x Matrix of independent variables. Each row is an observation and each column is a variable.
+#' @param y Response variable equivalent to the function.
+#' @param crit Information criterion.
+#' @param ... Aditional arguments to be passed to glmnet.
+#' @return An object with S3 class ic.glmnet.
+#' \item{coefficients}{Coefficients from the selected model.}
+#' \item{ic}{All information criterions.}
+#' \item{lambda}{Lambda from the selected model.}
+#' \item{nvar}{Number of variables on the selected model including the intercept.}
+#' \item{glmnet}{glmnet object.}
+#' \item{residuals}{Residuals from the selected model.}
+#' \item{fitted.values}{Fitted values from the selected model.}
+#' \item{ic.range}{Chosen information criterion calculated through all the regularization path.}
+#' \item{call}{The matched call.}
+#' @keywords glmnet, LASSO, Elasticnet, Ridge, Regularization
+#' @export
+#' @import Matrix glmnet
+#' @importFrom stats coef fitted var
+#' @examples
+#' ## == This example uses the Brazilian inflation data from
+#' #Garcia, Medeiros and Vasconcelos (2017) == ##
+#' data("BRinf")
+#'
+#' ## == Data preparation == ##
+#' ## == The model is yt = a + Xt-1'b + ut == ##
+#' aux = embed(BRinf,2)
+#' y=aux[,1]
+#' x=aux[,-c(1:ncol(BRinf))]
+#'
+#' ## == Ridge == ##
+#' ridge=ic.glmnet(x,y,crit = "bic",alpha=0)
+#' coef(ridge)
+#'
+#'
+#' ## == LASSO == ##
+#' lasso=ic.glmnet(x,y,crit = "bic")
+#' coef(lasso)
+#' fitted(lasso)
+#' residuals(lasso)
+#' lasso$ic
+#'
+#' ## == Adaptive LASSO == ##
+#' tau=1
+#' # Lasso as the first step model, intercept must be removed
+#' # to calculate the penalty factor.
+#' first.step.coef=coef(lasso)[-1]
+#' penalty.factor=abs(first.step.coef+1/sqrt(nrow(x)))^(-tau)
+#' adalasso=ic.glmnet(x,y,crit="bic",penalty.factor=penalty.factor)
+#' coef(adalasso)
+#' adalasso$ic
+#'
+#' @references Jerome Friedman, Trevor Hastie, Robert Tibshirani (2010). Regularization Paths for Generalized Linear Models via Coordinate Descent. Journal of Statistical Software, 33(1), 1-22. URL \url{http://www.jstatsoft.org/v33/i01/}.
+#' Garcia, Medeiros and Vasconcelos (2017).
+#' @seealso \code{\link[glmnet]{glmnet}}, \code{\link[glmnet]{cv.glmnet}}, \code{\link{predict}}, \code{\link{plot}}
+
+
 
 ic.glmnet = function (x, y, crit=c("bic","aic","aicc","hqc"),...)
 {
@@ -35,8 +97,8 @@ ic.glmnet = function (x, y, crit=c("bic","aic","aicc","hqc"),...)
 
   ic=c(bic=bic[selected],aic=aic[selected],aicc=aicc[selected],hqc=hqc[selected])
 
-  result=list(coef=coef[,selected],ic=ic,lambda = lambda[selected], nvar=nvar[selected],
-              glmnet=model,residuals=residuals[,selected],fitted=yhat[,selected],call = match.call())
+  result=list(coefficients=coef[,selected],ic=ic,lambda = lambda[selected], nvar=nvar[selected],
+              glmnet=model,residuals=residuals[,selected],fitted.values=yhat[,selected],ic.range=crit, call = match.call())
 
   class(result)="ic.glmnet"
   return(result)
