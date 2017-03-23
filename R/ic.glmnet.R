@@ -2,7 +2,9 @@
 #'
 #' Uses the glmnet function from the glmnet package to estimate models through all the regularization path and selects the best model using some information criterion. The glmnet package chooses the best model only by cross validation (cv.glmnet). Choosing with information criterion is faster and more adequate for some aplications, especially time-series.
 #'
-#' @details bla bla bla.
+#' @details Selecting the model using information criterion is faster than using cross validation and it has some theoretical advantages in some cases. For example, Zou, Hastie, Tibshirani (2007) show that one can consistently estimate the degrees of freedom of the LASSO using the BIC. Moreover, Information Criterions are becoming very popular, especially on time-series applications where cross-validation may impose further complications.
+#'
+#' The information criterions implmemented are the Bayesian Information Criterion (bic), the Akaike Information Criterion (aic) and its sample size correction (aicc) and the Hannah and Quinn Criterion (hqc).
 #'
 #' @param x Matrix of independent variables. Each row is an observation and each column is a variable.
 #' @param y Response variable equivalent to the function.
@@ -55,8 +57,11 @@
 #' coef(adalasso)
 #' adalasso$ic
 #'
-#' @references Jerome Friedman, Trevor Hastie, Robert Tibshirani (2010). Regularization Paths for Generalized Linear Models via Coordinate Descent. Journal of Statistical Software, 33(1), 1-22. URL \url{http://www.jstatsoft.org/v33/i01/}.
-#' Garcia, Medeiros and Vasconcelos (2017).
+#' @references Garcia, Medeiros and Vasconcelos (2017).
+#'
+#' Jerome Friedman, Trevor Hastie, Robert Tibshirani (2010). Regularization Paths for Generalized Linear Models via Coordinate Descent. Journal of Statistical Software, 33(1), 1-22. URL \url{http://www.jstatsoft.org/v33/i01/}.
+#'
+#' Zou, Hui, Trevor Hastie, and Robert Tibshirani. "On the “degrees of freedom” of the lasso." The Annals of Statistics 35.5 (2007): 2173-2192.
 #' @seealso \code{\link[glmnet]{glmnet}}, \code{\link[glmnet]{cv.glmnet}}, \code{\link{predict}}, \code{\link{plot}}
 
 
