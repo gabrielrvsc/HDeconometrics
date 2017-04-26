@@ -51,7 +51,7 @@ irf=function (object, ident, h, boot=FALSE, M=100, unity.shock = TRUE)
   delta=object$delta
   lambda=object$lambda
   fn=object$fn
-
+  type=ident$type
   # == prep data == #
   databoot=stats::embed(Y,p+1)
   if(length(xreg)!=0){
@@ -79,7 +79,7 @@ irf=function (object, ident, h, boot=FALSE, M=100, unity.shock = TRUE)
       objectboot=HDvarboot(Y,p,fn,xreg,dsamp)
     }
 
-    identboot = identification(objectboot)
+    identboot = identification(objectboot,type=type)
     irfboot = irfaux(objectboot, identboot, h = h, unity.shock = unity.shock)
     for (i in 1:nvar) {
       for (j in 1:nvar) {

@@ -4,18 +4,21 @@
 \alias{identification}
 \title{Recursive identification of a VAR model}
 \usage{
-identification(object)
+identification(object, type = c("recursive", "identity"))
 }
 \arguments{
 \item{object}{A HDvar or lbvar object.}
+
+\item{type}{"recursive" or "identity". The last is just using a identity matrix as contemporaneous shocks.}
 }
 \value{
 A list with the following objects:
 \item{A}{Matrix of contemporaneous coefficients.}
 \item{sigma2u}{Structural shocks covariance matrix.}
+\item{type}{Matched type.}
 }
 \description{
-Estimates the contemporaneous coefficients and the structural shocks covariance matrix using recursive identification.
+Estimates the contemporaneous coefficients and the structural shocks covariance matrix using recursive identification or using a identity matrix.
 }
 \examples{
 ## == This example uses the Brazilian inflation data from
