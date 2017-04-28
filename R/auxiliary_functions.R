@@ -1,3 +1,12 @@
+auxboost=function(x,u){
+  b=solve(t(x)%*%x)%*%(t(x)%*%u)
+  mod=lm(u~-1+x)
+  b=coef(mod)
+  e=u-x%*%matrix(b)
+  ssr=t(e)%*%e
+  return(c("b"=b,"ssr"=ssr))
+}
+
 
 irfaux=function(object,ident,h,unity.shock=TRUE){
   p=object$p
