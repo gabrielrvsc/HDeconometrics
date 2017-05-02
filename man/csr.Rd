@@ -4,7 +4,7 @@
 \alias{csr}
 \title{Estimate the Complete Subset Regressions (CSR) with pre-testing}
 \usage{
-csr(x, y, K = 20, k = 4, fixed.controls = NULL)
+csr(x, y, K = min(20, ncol(x)), k = 4, fixed.controls = NULL)
 }
 \arguments{
 \item{x}{Matrix of independent variables. Each row is an observation and each column is a variable.}
@@ -19,14 +19,9 @@ csr(x, y, K = 20, k = 4, fixed.controls = NULL)
 }
 \value{
 An object with S3 class csr.
-\item{coefficients}{Coefficients from the selected model.}
-\item{ic}{All information criterions.}
-\item{lambda}{Lambda from the selected model.}
-\item{nvar}{Number of variables on the selected model including the intercept.}
-\item{glmnet}{glmnet object.}
-\item{residuals}{Residuals from the selected model.}
-\item{fitted.values}{Fitted values from the selected model.}
-\item{ic.range}{Chosen information criterion calculated through all the regularization path.}
+\item{coefficients}{Coefficients on each model of the subset.}
+\item{fitted.values}{In-sample fitted values.}
+\item{residuals}{Model residuals.}
 \item{call}{The matched call.}
 }
 \description{
@@ -64,10 +59,8 @@ Garcia, Medeiros and Vasconcelos (2017).
 Medeiros, Marcelo C., and Gabriel FR Vasconcelos. "Forecasting macroeconomic variables in data-rich environments." Economics Letters 138 (2016): 50-52.
 }
 \seealso{
-\code{\link{predict}}, \code{\link{plot}}
+\code{\link{predict.csr}}
 }
-\keyword{Elasticnet,}
-\keyword{LASSO,}
-\keyword{Regularization}
-\keyword{Ridge,}
-\keyword{glmnet,}
+\keyword{Complete}
+\keyword{regression}
+\keyword{subset}

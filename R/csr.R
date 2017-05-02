@@ -14,16 +14,11 @@
 #' @param k Number of variables in each subset. Must be smaller than K.
 #' @param fixed.controls A vector indicatin which variables in x are fixed controls. May be a character vector with the variable names or a numeric vector with the variables position in x.
 #' @return An object with S3 class csr.
-#' \item{coefficients}{Coefficients from the selected model.}
-#' \item{ic}{All information criterions.}
-#' \item{lambda}{Lambda from the selected model.}
-#' \item{nvar}{Number of variables on the selected model including the intercept.}
-#' \item{glmnet}{glmnet object.}
-#' \item{residuals}{Residuals from the selected model.}
-#' \item{fitted.values}{Fitted values from the selected model.}
-#' \item{ic.range}{Chosen information criterion calculated through all the regularization path.}
+#' \item{coefficients}{Coefficients on each model of the subset.}
+#' \item{fitted.values}{In-sample fitted values.}
+#' \item{residuals}{Model residuals.}
 #' \item{call}{The matched call.}
-#' @keywords glmnet, LASSO, Elasticnet, Ridge, Regularization
+#' @keywords Complete subset regression
 #' @export
 #' @importFrom stats lm
 #' @importFrom utils combn
@@ -50,10 +45,10 @@
 #'
 #' Medeiros, Marcelo C., and Gabriel FR Vasconcelos. "Forecasting macroeconomic variables in data-rich environments." Economics Letters 138 (2016): 50-52.
 #'
-#' @seealso \code{\link{predict}}, \code{\link{plot}}
+#' @seealso \code{\link{predict.csr}}
 
 
-csr=function (x, y, K = 20, k = 4, fixed.controls = NULL)
+csr=function (x, y, K = min(20,ncol(x)), k = 4, fixed.controls = NULL)
 {
 
   if(!is.matrix(x)){
@@ -115,7 +110,7 @@ csr=function (x, y, K = 20, k = 4, fixed.controls = NULL)
   fitted.values=rowMeans(fitted.values.i)
   residuals=y-fitted.values
 
-  result=list(coefficients = final.coef,fitted.values=fitted.values,residuals=residuals)
+  result=list(coefficients = final.coef,fitted.values=fitted.values,residuals=residuals,call=match.call())
   class(result)="csr"
 
   return(result)
