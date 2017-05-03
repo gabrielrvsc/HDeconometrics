@@ -1,12 +1,11 @@
 Package: HDeconometrics
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Implementation of several econometric models in high-dimension.
 Version: 0.1.0
 Authors@R: c(person("Gabriel F. R.", "Vasconcelos", email="gabrielrvsc@yahoo.com.br", role = c("aut", "cre")))
 Maintainer: Gabriel Vasconcelos <gabrielrvsc@yahoo.com.br>
 BugReports: https://github.com/gabrielrvsc/HDeconometrics/issues
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: This packages contains a set of functions with methods for the following models: LASSO, Complete Subset Regressions, Boosting for time-series, bagging, VAR and Bayesian VAR. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: TRUE
