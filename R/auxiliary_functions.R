@@ -16,7 +16,7 @@ irfaux=function(object,ident,h,unity.shock=TRUE){
 
   aux=diag(k)
   if(unity.shock==FALSE){
-    aux=aux%*%sqrt(ident$sigma2u)
+    aux=aux%*%sqrt(ident$covmatu)
   }
   phi0=solve(ident$A)%*%aux
 
