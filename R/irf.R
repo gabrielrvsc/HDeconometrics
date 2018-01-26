@@ -50,6 +50,8 @@ irf=function (object, ident, h, boot=FALSE, M=100, unity.shock = TRUE)
   nvar = ncol(object$residuals)
   delta=object$delta
   lambda=object$lambda
+  ps=object$ps
+  tau=object$tau
   fn=object$fn
   type=ident$type
   # == prep data == #
@@ -73,7 +75,7 @@ irf=function (object, ident, h, boot=FALSE, M=100, unity.shock = TRUE)
     resamp = sample(1:nrow(databoot), nrow(databoot), replace = TRUE)
     dsamp=databoot[resamp,]
     if(cl=="lbvar"){
-      objectboot=lbvarboot(Y,p,delta,lambda,xreg,dsamp)
+      objectboot=lbvarboot(Y,p,delta,lambda,xreg,dsamp,ps,tau)
     }
     if(cl=="HDvar"){
       objectboot=HDvarboot(Y,p,fn,xreg,dsamp)

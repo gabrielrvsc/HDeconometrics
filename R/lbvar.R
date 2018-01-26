@@ -8,6 +8,8 @@
 #' @param delta Numeric vector indicating the prior for the autorregressive coefficients (default = 0 for all variables). If the prior is the same for all variables the user may supply a single number. Otherwise the vector must have one element for each variable.
 #' @param lambda Constant that regulates the importance given to the priors (default = 0.05). If lambda = 0 the model ignores the data and the posterior equal the prior. For bigger lambda the model converges to the OLS  estimates.
 #' @param xreg Exogenous controls.
+#' @param ps If TRUE the priors on the sum of the coefficients will be included.
+#' @param tau Controls the shrinkage in the priors on the sum of the coefficients.
 #' @return An object with S3 class "HDeconometricsVAR", "lbvar".
 #' \item{coef.by.equation}{Coefficients listed by each VAR equation.}
 #' \item{coef.by.block}{Coefficients separated by blocks (intercepts, lags, exogenous).}
@@ -43,7 +45,7 @@
 #' @seealso \code{\link{predict}}, \code{\link{HDvar}}, \code{\link{irf}}, \code{\link{fitLambda}}
 
 
-lbvar=function (Y, p = 1, delta = 0, lambda = 0.05, xreg = NULL)
+lbvar=function (Y, p = 1, delta = 0, lambda = 0.05, xreg = NULL,ps=FALSE,tau=10*lambda)
 {
   if (!is.matrix(Y)) {
     Y = as.matrix(Y)
@@ -88,6 +90,18 @@ lbvar=function (Y, p = 1, delta = 0, lambda = 0.05, xreg = NULL)
     Xreg = cbind(Xreg, tail(xreg, nrow(Xreg)))
   }
   Xd = cbind(c(rep(0, nrow(aux6) - 1), 0.1), aux6)
+
+  if(ps==TRUE){
+    YDps=diag(colMeans(Yreg))/tau
+    XDps=cbind(0,kronecker(t(1:p),YDps))
+    if(length(xreg)>0){
+      aux=matrix(0,nrow(XDps),ncol(Xd)-ncol(XDps))
+      XDps=cbind(XDps,aux)
+    }
+
+    Xd=rbind(Xd,XDps)
+    Yd=rbind(Yd,YDps)
+  }
 
   # == Variable Star == #
   Ystar = rbind(Yd, Yreg)
@@ -141,7 +155,7 @@ lbvar=function (Y, p = 1, delta = 0, lambda = 0.05, xreg = NULL)
 
   result=list(coef.by.equation = coef.by.equation, coef.by.block = coef.by.block,
               fitted.values = fitted , residuals=residuals, Y = Y, p = p, N=N, covmat = sigmae,
-              xreg = xreg, Ts = c(T = nrow(Xreg), Td = nrow(Xd), Tstar = nrow(Xstar)),delta=delta,lambda=lambda,call=match.call())
+              xreg = xreg, Ts = c(T = nrow(Xreg), Td = nrow(Xd), Tstar = nrow(Xstar)),delta=delta,lambda=lambda,ps=ps,tau=tau,call=match.call())
   class(result)=c("HDeconometricsVAR","lbvar")
 
   return(result)

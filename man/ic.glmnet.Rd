@@ -2,7 +2,7 @@
 % Please edit documentation in R/ic.glmnet.R
 \name{ic.glmnet}
 \alias{ic.glmnet}
-\title{Estimate a GLM with lasso, elasticnet or ridge regularization using the information criterion}
+\title{Estimate a GLM with lasso, elasticnet or ridge regularization using information criterion}
 \usage{
 ic.glmnet(x, y, crit = c("bic", "aic", "aicc", "hqc"), ...)
 }
@@ -28,7 +28,7 @@ An object with S3 class ic.glmnet.
 \item{call}{The matched call.}
 }
 \description{
-Uses the glmnet function from the glmnet package to estimate models through all the regularization path and selects the best model using some information criterion. The glmnet package chooses the best model only by cross validation (cv.glmnet). Choosing with information criterion is faster and more adequate for some aplications, especially time-series.
+Uses the glmnet (for family = "gaussian") function from the glmnet package to estimate models through all the regularization path and selects the best model using some information criterion. The glmnet package chooses the best model only by cross validation (cv.glmnet). Choosing with information criterion is faster and more adequate for some aplications, especially time-series.
 }
 \details{
 Selecting the model using information criterion is faster than using cross validation and it has some theoretical advantages in some cases. For example, Zou, Hastie, Tibshirani (2007) show that one can consistently estimate the degrees of freedom of the LASSO using the BIC. Moreover, Information Criterions are becoming very popular, especially on time-series applications where cross-validation may impose further complications.

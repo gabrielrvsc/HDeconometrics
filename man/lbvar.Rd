@@ -4,7 +4,8 @@
 \alias{lbvar}
 \title{Estimate Large Bayesian VARs}
 \usage{
-lbvar(Y, p = 1, delta = 0, lambda = 0.05, xreg = NULL)
+lbvar(Y, p = 1, delta = 0, lambda = 0.05, xreg = NULL, ps = FALSE,
+  tau = 10 * lambda)
 }
 \arguments{
 \item{Y}{Time-series matrix or data.frame with the VAR endogenous variables.}
@@ -16,6 +17,10 @@ lbvar(Y, p = 1, delta = 0, lambda = 0.05, xreg = NULL)
 \item{lambda}{Constant that regulates the importance given to the priors (default = 0.05). If lambda = 0 the model ignores the data and the posterior equal the prior. For bigger lambda the model converges to the OLS  estimates.}
 
 \item{xreg}{Exogenous controls.}
+
+\item{ps}{If TRUE the priors on the sum of the coefficients will be included.}
+
+\item{tau}{Controls the shrinkage in the priors on the sum of the coefficients.}
 }
 \value{
 An object with S3 class "HDeconometricsVAR", "lbvar".

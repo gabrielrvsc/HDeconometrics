@@ -118,7 +118,7 @@ HDvarboot=function(Y,p,fn,xreg=NULL,databoot){
 
 
 
-lbvarboot=function (Y, p = 1, delta = 0, lambda = 0.05, xreg = NULL,databoot)
+lbvarboot=function (Y, p = 1, delta = 0, lambda = 0.05, xreg = NULL,databoot, ps=TRUE, tau=10*lambda)
 {
 
   N = ncol(Y)
@@ -154,6 +154,19 @@ lbvarboot=function (Y, p = 1, delta = 0, lambda = 0.05, xreg = NULL,databoot)
     Xreg = cbind(Xreg, tail(xreg, nrow(Xreg)))
   }
   Xd = cbind(c(rep(0, nrow(aux6) - 1), 0.1), aux6)
+
+  if(ps==TRUE){
+    YDps=diag(colMeans(Yreg))/tau
+    XDps=cbind(0,kronecker(t(1:p),YDps))
+    if(length(xreg)>0){
+      aux=matrix(0,nrow(XDps),ncol(Xd)-ncol(XDps))
+      XDps=cbind(XDps,aux)
+    }
+
+    Xd=rbind(Xd,XDps)
+    Yd=rbind(Yd,YDps)
+  }
+
 
   # == Variable Star == #
   Ystar = rbind(Yd, Yreg)

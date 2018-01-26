@@ -12,6 +12,8 @@
 #' @param delta Numeric vector indicating the prior for the autorregressive coefficients (default = 0 for all variables). If the prior is the same for all variables the user may supply a single number. Otherwise the vector must have one element for each variable.
 #' @param xreg Exogenous controls.
 #' @param scale If TRUE the variables are centered with variance equal 1 (default is TRUE).
+#' @param ps If TRUE the priors on the sum of the coefficients will be included.
+#' @param tau Controls the shrinkage in the priors on the sum of the coefficients.
 #' @keywords VAR, BVAR, High-dimension, Bayesian models
 #' @export
 #' @examples
@@ -31,7 +33,7 @@
 #' @seealso \code{\link{lbvar}}
 
 
-fitLambda=function(Y,variables=1,lambdaseq=seq(0,1,0.1),p=1,p.reduced=p,delta=0,xreg=NULL,scale=TRUE){
+fitLambda=function(Y,variables=1,lambdaseq=seq(0,1,0.1),p=1,p.reduced=p,delta=0,xreg=NULL,scale=TRUE,ps=FALSE,tau=10*lambdaseq){
   if(scale==TRUE){
     Y=scale(Y)
   }
@@ -42,7 +44,7 @@ fitLambda=function(Y,variables=1,lambdaseq=seq(0,1,0.1),p=1,p.reduced=p,delta=0,
 
   save.rmseV=rep(0,length(lambdaseq))
   for(i in 1:length(lambdaseq)){
-    lbv=lbvar(Y,p,lambda = lambdaseq[i],delta=delta,xreg=xreg)
+    lbv=lbvar(Y,p,lambda = lambdaseq[i],delta=delta,xreg=xreg,ps=ps,tau=tau[i])
     residV=stats::residuals(lbv)[,variables]
     rmseV=sum(sqrt(colMeans(residV^2)))
     save.rmseV[i]=rmseV

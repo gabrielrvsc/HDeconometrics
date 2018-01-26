@@ -5,7 +5,8 @@
 \title{Fit the parameter lambda of the Bayesian VAR}
 \usage{
 fitLambda(Y, variables = 1, lambdaseq = seq(0, 1, 0.1), p = 1,
-  p.reduced = p, delta = 0, xreg = NULL, scale = TRUE)
+  p.reduced = p, delta = 0, xreg = NULL, scale = TRUE, ps = FALSE,
+  tau = 10 * lambdaseq)
 }
 \arguments{
 \item{Y}{Time-series matrix or data.frame with the VAR endogenous variables.}
@@ -23,6 +24,10 @@ fitLambda(Y, variables = 1, lambdaseq = seq(0, 1, 0.1), p = 1,
 \item{xreg}{Exogenous controls.}
 
 \item{scale}{If TRUE the variables are centered with variance equal 1 (default is TRUE).}
+
+\item{ps}{If TRUE the priors on the sum of the coefficients will be included.}
+
+\item{tau}{Controls the shrinkage in the priors on the sum of the coefficients.}
 }
 \description{
 Fit the parameter lambda of the Bayesian VAR. This parameter controls the importance given to the priors. If lambda=0 the model is the same as the OLS case. For bigger values of lambda more importance is given to the priors and less importance to the data.
