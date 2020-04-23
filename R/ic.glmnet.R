@@ -81,6 +81,20 @@ ic.glmnet = function (x, y, crit=c("bic","aic","aicc","hqc"),...)
   lambda = model$lambda
   df = model$df
 
+  if(alpha==0){
+    xs = scale(x)
+    I = diag(ncol(x))
+    xx = t(xs)%*%xs
+    for(i in 1:length(lambda)){
+      aux = solve(xx + I*lambda[i])
+      df[i] = sum(diag(xs%*%aux%*%t(xs)))
+    }
+
+
+  }
+
+
+
   yhat=cbind(1,x)%*%coef
   residuals = (y- yhat)
   mse = colMeans(residuals^2)
@@ -103,7 +117,7 @@ ic.glmnet = function (x, y, crit=c("bic","aic","aicc","hqc"),...)
   ic=c(bic=bic[selected],aic=aic[selected],aicc=aicc[selected],hqc=hqc[selected])
 
   result=list(coefficients=coef[,selected],ic=ic,lambda = lambda[selected], nvar=nvar[selected],
-              glmnet=model,residuals=residuals[,selected],fitted.values=yhat[,selected],ic.range=crit, call = match.call())
+              glmnet=model,residuals=residuals[,selected],fitted.values=yhat[,selected],ic.range=crit, df = df, call = match.call())
 
   class(result)="ic.glmnet"
   return(result)
