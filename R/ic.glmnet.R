@@ -66,7 +66,7 @@
 
 
 
-ic.glmnet = function (x, y, crit=c("bic","aic","aicc","hqc"),...)
+ic.glmnet = function (x, y, crit=c("bic","aic","aicc","hqc"),alpha = 1,...)
 {
   if (is.matrix(x) == FALSE) {
     x = as.matrix(x)
@@ -76,7 +76,7 @@ ic.glmnet = function (x, y, crit=c("bic","aic","aicc","hqc"),...)
   }
   crit=match.arg(crit)
   n=length(y)
-  model = glmnet(x = x, y = y, ...)
+  model = glmnet(x = x, y = y,alpha = alpha, ...)
   coef = coef(model)
   lambda = model$lambda
   df = model$df
